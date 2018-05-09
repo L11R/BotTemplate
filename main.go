@@ -1,11 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"encoding/json"
 	"go.uber.org/zap/zapcore"
+	"log"
 )
 
 // Logger and Bot global variables
@@ -43,7 +44,8 @@ func main() {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		sugar.Fatalf("fatal error config file: %v", err)
+		// sugar isn't initialized yet
+		log.Fatalf("cannot read config: %v", err)
 	}
 
 	// Configuration defaults
@@ -69,12 +71,12 @@ func main() {
 
 	// Check token
 	if !viper.IsSet("token") {
-		sugar.Fatalf("fatal error token null")
+		sugar.Fatalf("token not specified")
 	}
 
 	bot, err = tgbotapi.NewBotAPI(viper.GetString("token"))
 	if err != nil {
-		sugar.Fatalf("fatal error bot api init: %v", err)
+		sugar.Fatalf("bot api init: %v", err)
 	}
 
 	sugar.Infof("authorized on @%s", bot.Self.UserName)
