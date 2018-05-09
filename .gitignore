@@ -20,3 +20,6 @@
 vendor
 Gopkg.toml
 Gopkg.lock
+
+# Main configuration file
+config.yml
